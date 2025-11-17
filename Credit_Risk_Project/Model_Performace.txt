@@ -1,0 +1,58 @@
+Model Performance Report
+Project: Interpretable AI — SHAP Analysis of a GBM for Credit Risk Prediction
+Dataset: credit-g (sklearn fetch_openml)
+Date: [17/11/2025]
+
+1. Model summary
+- Algorithm: LightGBM (LGBMClassifier)
+- Training procedure: GridSearchCV with 5-fold CV on training set
+- Tuned hyperparameters and selected (best) values:
+  - num_leaves: [[31, 50]
+  - learning_rate: [0.01, 0.05, 0.1]
+  - n_estimators: [100, 300]
+- Final model used for evaluation: LGBMClassifier(num_leaves,Learning_rate,n_estimators)
+
+2. Data split
+- Training set size: [0.8]
+- Test set size: [0.2]
+- Random state: 42
+
+3. Metrics on test set (paste the numeric outputs produced by the notebook)
+- AUC (ROC): [ 0.819088832792403]
+- F1 score: [0.6262626262626263]
+- Precision, recall, support (from classification report):
+  - Precision (class 0): [0.82 ]
+  - Recall (class 0): [ 0.94  ]
+  - Precision (class 1): [ 0.78 ]
+  - Recall (class 1): [ 0.53 ]
+- Confusion matrix (interpretation): [got values based on the accuracy result]
+
+4. Interpretation of results
+- AUC interpretation:
+  - AUC = 0.5 indicates no discrimination.
+  - AUC close to 1.0 indicates excellent discrimination.
+  - Observed AUC:[0.8] → Interpretation: [ "Moderate" ]
+- F1 score interpretation:
+  - F1 balances precision and recall (useful when classes are imbalanced).
+  - Observed F1:[0.62] → Interpretation: [e.g., "High F1 indicates balanced precision and recall for the positive (default) class."]
+- Precision / Recall tradeoff:
+  - If recall is substantially higher than precision for the default class, the model catches many defaults but with more false positives — may be okay for conservative lending.
+  - If precision is substantially higher, you produce fewer false positives but may miss real defaulters.
+
+5. Key performance observations & recommended next steps
+- If AUC < 0.7:
+  - Consider more feature engineering, additional predictors, or class rebalancing (SMOTE / class weights).
+- If F1 for class 1 (bad risk) is low:
+  - Try tuning the decision threshold (not only 0.5), optimize for recall or precision depending on business priority.
+- If overfitting is suspected (training vs test metric gap):
+  - Increase regularization, reduce complex hyperparameters, or collect more data.
+
+6. Artifacts to include with submission
+- Notebook (`credit_risk_notebook.ipynb`) with full code and printed metrics.
+- Screenshots of:
+  - SHAP summary plot (global importance)
+  - SHAP dependence plots (top 5 features)
+  - 5 SHAP force plots (local explanations)
+- This performance report (filled with actual numbers).
+
+Prepared by: Sindhu (with assistant guidance)

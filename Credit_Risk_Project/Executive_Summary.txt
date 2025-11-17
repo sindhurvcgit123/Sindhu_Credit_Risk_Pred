@@ -1,0 +1,28 @@
+Executive Summary — Credit Risk Model (for Compliance Officer)
+
+This project developed an interpretable machine learning model to predict the probability that a borrower will default on a loan. The model is a Gradient Boosting Machine (LightGBM) trained on an anonymized credit dataset. Our goal was to build a high-performing model while providing clear, legally-compliant explanations of what drives each decision at both the global and individual levels.
+
+Model performance
+We trained and cross-validated the model using a robust 5-fold procedure and tuned hyperparameters to optimize classification performance. The model’s discrimination ability is reported by the AUC (area under the ROC curve) and its balance between precision and recall is captured by the F1 score. [Paste actual AUC and F1 here]. These metrics show that the model distinguishes between higher and lower default risk cases reliably and balances the tradeoff between false positives and false negatives appropriate to the use case.
+
+Key drivers of risk
+To ensure explainability, we applied SHAP (Shapley Additive exPlanations), which decomposes each prediction into contributions from individual features. Globally, the five most important features driving credit risk were: [PASTE TOP 5]. For each feature we produced dependence plots to show how changes in feature values affect predicted risk. For example, [give one or two short, non-technical examples, e.g., “higher past delinquency leads to higher predicted default probability”].
+
+Local explanations and case review
+We generated local SHAP force plots for five real test cases representing high-risk, low-risk, and uncertain predictions. Each plot visually shows which features pushed the model toward a higher or lower default probability for that specific applicant. These visualizations provide immediate, human-readable reasons for an automated decision, suitable for loan officers or appeals.
+
+Fairness assessment
+We compared SHAP contributions and predicted probabilities across two demographic subgroups (age-based groups used as a proxy for the demonstration). The analysis examined whether any features systematically produced disparate impacts for a protected group. Where differences were observed, we flagged the feature, provided the numerical magnitude of the difference, and suggested remediation strategies. No automated adjustments were made in the base model; instead, we recommend operational or policy-level actions if the bank requires them (e.g., threshold calibration or reweighting) and additional data collection to understand root causes.
+
+Interpretability risks and compliance notes
+SHAP explanations reduce reliance on opaque “black-box” reasoning by providing additive, feature-level attributions. However, explanations are only as good as the input data — proxy variables can carry sensitive information indirectly. We therefore recommend:
+- Documenting which features are included and why.
+- Performing periodic re-evaluation and monitoring for distributional shifts and fairness drift.
+- Maintaining human-in-the-loop review for edge cases and appeals.
+
+Conclusion and next steps
+The LightGBM + SHAP pipeline provides a production-feasible solution balancing predictive performance and interpretability. For immediate action, we recommend (1) finalizing model threshold(s) in collaboration with business stakeholders, (2) addressing any identified fairness concerns per policy, and (3) operationalizing the explanation outputs into the decision workflow (e.g., include the SHAP summary and top contributing features in rejection notices or internal review dashboards).
+
+If you wish, I will produce a short slide deck for compliance summarizing the findings and the recommended controls.
+
+Prepared by: Sindhu (with assistant guidance)

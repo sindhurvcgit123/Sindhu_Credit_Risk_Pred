@@ -1,0 +1,60 @@
+Bias & Fairness Analysis Report
+Project: Interpretable AI — SHAP Analysis of a GBM for Credit Risk Prediction
+Dataset: credit-g
+Date: [17/11/2025]
+
+1. Purpose
+- To check whether the model treats different demographic subgroups differently, by comparing feature contributions (SHAP values) and predicted default rates between subgroups.
+
+2. Groups analyzed
+(Example used in notebook — fill with actual group names / counts)
+- Group A: age_group = "young" (age <= 25)
+- Group B: age_group = "adult" (age > 25)
+
+Note: If other sensitive attributes exist (e.g., personal_status, sex), repeat the same analysis for those subgroups.
+
+3. Methodology
+- Compute SHAP values for the test set using `shap.TreeExplainer(best_model)`.
+- Create a DataFrame of shap_values with columns matching X_test feature names.
+- Join `age_group` from the original dataset for the same indices in X_test.
+- Compute average absolute SHAP for each feature per group and compare.
+- Compare predicted default probability (y_prob) averages per group.
+- Statistical check: run a simple two-sample t-test (or Mann–Whitney U) on mean SHAP values for top features to check significance (optional).
+
+4. Key metrics to report (paste numeric results)
+- Group sizes:
+  - N(young) = [25]
+  - N(adult) = [60]
+- Average predicted default probability:
+  - mean_prob(young) = [0.141]
+  - mean_prob(adult) = [-0.108]
+- Top 5 features by global importance: [PASTE list]
+- For each top feature, average absolute SHAP by group:
+  - Feature1: mean_shap(young) = [0.141], mean_shap(adult) = [-0.108], difference = [0.033]
+  - Feature2: ...
+- Any statistically significant differences (p-values) if tested: [PASTE]
+
+5. Observations (example template)
+- Observation 1: Feature X contributes more toward predicted defaults for group Y. (Explain with numbers)
+- Observation 2: Average predicted default probability is higher/lower for group Z by [PASTE difference]. Describe possible reasons (feature distributions, label imbalance).
+- Observation 3: If feature contributions are similar across groups, we note no apparent bias for those features.
+
+6. Interpretability & fairness risk assessment
+- If certain non-actionable attributes (e.g., nationality, sex) are driving predictions strongly, that’s a compliance risk.
+- If differences arise because groups have different base rates (label distribution), consider:
+  - Adjusting thresholds per group (careful — this is disparate treatment)
+  - Reweighting training data or adversarial debiasing
+  - Removing or transforming sensitive features (use caution: removing can reduce transparency or perpetuate proxy problems)
+
+7. Recommended mitigations (practical steps)
+- Re-check feature correlations: sensitive attribute proxies may be present (e.g., zip → income).
+- Consider group-specific calibration (post-hoc) if the business can accept it.
+- Use fairness-aware reweighting if the model systematically harms one group and business/regulatory policy requires correction.
+- Document findings clearly in the executive summary and present recommended actions to compliance.
+
+8. Deliverables to attach
+- Bar chart: average SHAP per top feature by group (from notebook)
+- Table: mean predicted probability by group
+- This bias analysis text (filled with numbers and interpretations)
+
+Prepared by: Sindhu (with assistant guidance)
