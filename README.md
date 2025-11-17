@@ -9,6 +9,9 @@ This repository contains a reproducible notebook and required deliverables for t
 - `bias_analysis_report.txt` — Fairness analysis (to fill with evaluated numbers).
 - `executive_summary.txt` — 500-word summary for compliance.
 - `README.md` — This file.
+- 'SHAP_Dependancies_plot.png'
+- 'SHAP_forceplots.png'
+- 'SHAP_Summaryplots.png'
 
 ## Requirements
 Create a Python environment with the following packages:
